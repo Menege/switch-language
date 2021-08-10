@@ -1,34 +1,38 @@
 <template>
   <div class="container">
-    <app-alert
-    v-if="alert"
-text="Тот самый текст"
-title="ССССССССССССВАП"
-type=" warning"
-closable
-@close="alert=false"
-    ></app-alert>
     <div class="card">
-<button 
+      <h2>{{ $i18n('app.title') }}</h2>
 
-class="btn primary" @click="toogleAlert">{{ alert ?'скрыть':'показать'}} сообщение</button>
+      <button class="btn" @click="changeLang">{{ $i18n('app.changeBtn') }}</button>
+      <button class="btn primary" @click="modal = true">Открыть модалку</button>
+
+      <teleport to="#modal">
+        <app-modal
+          v-if="modal"
+          @close="modal = false"
+        ></app-modal>
+      </teleport>
     </div>
   </div>
 </template>
- 
+
 <script>
-import AppAlert from './components/AppAlert.vue'
+import AppModal from './components/AppModal'
+
 export default {
-  data(){return{
-    alert:false
-  }},
-  methods:{
-toogleAlert(){
-  this.alert=!this.alert
-}
+  inject: ['changeI18N'],
+  data() {
+    return {
+      modal: false
+    }
   },
-  
-components:{AppAlert}
+  methods: {
+    changeLang() {
+      this.changeI18N('en')
+      this.$forceUpdate()
+    }
+  },
+  components: {AppModal}
 }
 </script>
 
